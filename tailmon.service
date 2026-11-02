@@ -1,0 +1,13 @@
+[Unit]
+Description=Tailscale Homelab Node Sentinel & Uptime Monitor
+After=network.target tailscaled.service
+
+[Service]
+Type=simple
+WorkingDirectory=/home/yudha/projects/tailmon
+ExecStart=/usr/bin/python3 /home/yudha/projects/tailmon/tailmon.py --daemon --config /home/yudha/projects/tailmon/config.json
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,16 @@
+{
+  "poll_interval_seconds": 60,
+  "ping_timeout_seconds": 2,
+  "offline_threshold_cycles": 2,
+  "filter_funnel_nodes": true,
+  "telegram": {
+    "enabled": false,
+    "bot_token": "YOUR_BOT_TOKEN_HERE",
+    "chat_id": "YOUR_CHAT_ID_HERE"
+  },
+  "watched_devices": [
+    "DESKTOP-D7Q985A",
+    "POCO F6",
+    "yudha-nitroan51558"
+  ]
+}
