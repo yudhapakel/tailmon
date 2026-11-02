@@ -100,14 +100,14 @@ def parse_peers(status_data: dict, config: dict) -> list:
 
 def print_status_table(peers: list, self_name: str):
     print("\n" + "=" * 65)
-    print(f" 🛰️  TAILMON - Tailscale Mesh Status ({self_name})")
+    print(f" TAILMON - Tailscale Mesh Status ({self_name})")
     print(f" Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print("=" * 65)
     print(f"{'DEVICE NAME':<22} | {'TAILSCALE IP':<16} | {'STATUS':<9} | {'LATENCY'}")
     print("-" * 65)
 
     for p in peers:
-        status_icon = "🟢 UP" if p["online"] else "🔴 DOWN"
+        status_icon = "[UP]" if p["online"] else "[DOWN]"
         latency_str = "-"
         if p["online"]:
             reachable, lat = ping_node(p["ip"], timeout=1)
@@ -136,7 +136,7 @@ def run_sentinel_cycle(config: dict, notifier: TelegramNotifier, state: dict):
                 # Recovered alert
                 _, lat = ping_node(p["ip"], timeout=2)
                 lat_text = f" (Latency: {lat})" if lat else ""
-                msg = f"🟢 *[RECOVERED]* Device `{name}` is back online!{lat_text}\n📍 IP: `{p['ip']}`"
+                msg = f"*[RECOVERED]* Device `{name}` is back online!{lat_text}\nIP: `{p['ip']}`"
                 notifier.send(msg)
                 logger.info("Device recovered: %s", name)
 
@@ -145,7 +145,7 @@ def run_sentinel_cycle(config: dict, notifier: TelegramNotifier, state: dict):
             fail_count += 1
             if fail_count >= offline_threshold and prev_status != "DOWN":
                 # Trigger offline alert
-                msg = f"🔴 *[ALERT]* Device `{name}` is unreachable!\n📍 IP: `{p['ip']}`\n⚠️ Status: Offline for {fail_count} cycles"
+                msg = f"*[ALERT]* Device `{name}` is unreachable!\nIP: `{p['ip']}`\nStatus: Offline for {fail_count} cycles"
                 notifier.send(msg)
                 logger.warning("Device offline alert triggered for: %s", name)
                 state[name] = {"status": "DOWN", "fail_count": fail_count, "last_seen": p.get("last_seen")}
